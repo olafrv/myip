@@ -4,7 +4,7 @@ export
 all: install run
 
 install:
-	sudo apt-get install -y nodejs
+	sudo apt-get install -y nodejs npm
 	npm install
 
 download:
@@ -21,7 +21,7 @@ run: download
 run.docker: download
 	docker compose up --build
 
-start:
+start: download
 	docker compose up -d --build
 
 stop:
