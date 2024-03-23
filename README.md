@@ -9,13 +9,10 @@ MYIP_MM_KEY=your_maxmind_key
 
 Run the following commands:
 ```bash
-npm install
-mkdir dbs
-nodejs download.js
-find dbs -type d -name 'GeoLite2-ASN_*' -exec rm -rf {} \;
-tar xvfz dbs/GeoLite2-ASN.tar.gz -C dbs
-cp dbs/GeoLite2-ASN_*/*.mmdb dbs/
-nodejs app.js
-docker compose up --build
-docker compose up -d --build
+apt install make
+make            # install, download and run
+make install    # only install node modules
+make download   # download maxmind database
+make run        # run the application
+make run.docker # run the application in a docker container
 ```
