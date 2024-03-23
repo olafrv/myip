@@ -1,0 +1,17 @@
+services:
+  myip:
+    container_name: myip
+    image: olafrv/myip:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    restart: always
+    volumes:
+      - ./dbs:/usr/src/app/dbs
+    environment:
+      - NODE_ENV=production
+
