@@ -17,3 +17,8 @@ make download   # download maxmind database (delete the old one first)
 make run        # run the application in the host
 make run.docker # run the application in a docker container
 ```
+
+# References
+
+* https://dev.maxmind.com/geoip/updating-databases
+* https://www.maxmind.com/en/accounts/current/geoip/downloads
