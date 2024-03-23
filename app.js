@@ -2,6 +2,7 @@ const { env } = require('process');
 const express = require('express');
 const maxmind = require('@maxmind/geoip2-node').Reader;
 
+const PORT = env.MYIP_PORT || 3000;
 const app = express();
 
 app.use((req, res, next) => {
@@ -41,7 +42,6 @@ app.get('/', (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

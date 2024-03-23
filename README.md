@@ -5,6 +5,7 @@ Create `.env` with the following content:
 MYIP_TOKEN=your_token
 MYIP_MM_USER=your_maxmind_user
 MYIP_MM_KEY=your_maxmind_key
+MYIP_PORT=8888
 ```
 
 Run the following commands:
