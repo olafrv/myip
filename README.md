@@ -14,8 +14,10 @@ sudo apt install make
 make            # install, download and run
 make install    # only install node modules
 make download   # download maxmind database (delete the old one first)
-make run        # run the application in the host
-make run.docker # run the application in a docker container
+make run        # run the node app (foreground)
+make run.docker # run the node app container (foreground)
+make start      # start the app container (daemon)
+make stop       # stop the app container (daemon)
 ```
 
 # References

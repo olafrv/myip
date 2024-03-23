@@ -20,3 +20,9 @@ run: download
 
 run.docker: download
 	docker compose up --build
+
+start:
+	docker compose up -d --build
+
+stop:
+	docker compose down
