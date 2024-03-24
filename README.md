@@ -11,13 +11,14 @@ MYIP_PORT=8888
 Run the following commands:
 ```bash
 sudo apt install make
-make            # install, download and run
-make install    # only install node modules
-make download   # download maxmind database (delete the old one first)
+make            # install, download and start
+make install    # only install packages needes
+make download   # delete old and download new maxmind db
 make run        # run the node app (foreground)
 make run.docker # run the node app container (foreground)
 make start      # start the app container (daemon)
 make stop       # stop the app container (daemon)
+make restart    # restart the app container (daemon)
 ```
 
 # References

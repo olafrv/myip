@@ -1,7 +1,7 @@
 include .env
 export
 
-all: install run
+all: install download start
 
 install:
 	sudo apt-get install -y nodejs npm
@@ -11,15 +11,15 @@ download:
 	mkdir -p dbs
 	nodejs download.js \
 	&& find dbs -type d -name 'GeoLite2-ASN_*' | xargs -n1 rm -v -i -rf \
-	&& tar xvfz dbs/GeoLite2-ASN.tar.gz -C dbs \
-	&& cp dbs/GeoLite2-ASN_*/*.mmdb dbs/ || echo "Maxmind GeoIP DB download error!"
+	&& tar xvfz dbs/GeoLite2-ASN.tar.gz -C dbs/ \
+	&& cp dbs/GeoLite2-ASN_*/*.mmdb dbs/ || echo "Maxmind DB download error!"
 	test -f dbs/GeoLite2-ASN.mmdb 
 
-run: download
+run:
 	npm update > /dev/null
 	nodejs app.js
 
-run.docker: download
+run.docker:
 	docker compose up --build
 
 start:
@@ -27,3 +27,5 @@ start:
 
 stop:
 	docker compose down
+
+restart: stop start
