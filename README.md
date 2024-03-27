@@ -14,11 +14,17 @@ sudo apt install make
 make            # install, download and start
 make install    # only install packages needes
 make download   # delete old and download new maxmind db
-make run        # run the node app (foreground)
-make run.docker # run the node app container (foreground)
+# make run        # Dev: run the node app (foreground)
+# make run.docker # Dev: run the node app container (foreground)
 make start      # start the app container (daemon)
 make stop       # stop the app container (daemon)
 make restart    # restart the app container (daemon)
+```
+
+Use the following command to get the IP ASN:
+```bash	
+wget -qO- http://localhost:8888/?token=your_token
+# output: {"ip":"your_ip","asn":"your_asn"}
 ```
 
 # References
