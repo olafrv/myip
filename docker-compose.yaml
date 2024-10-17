@@ -12,6 +12,8 @@ services:
     restart: always
     volumes:
       - ./dbs:/usr/src/app/dbs
+      - "${MYIP_SSL_KEY}:/usr/src/app/letsencrypt/privkey.pem"
+      - "${MYIP_SSL_FULLCHAIN}:/usr/src/app/letsencrypt/fullchain.pem"
     environment:
       - NODE_ENV=production
 

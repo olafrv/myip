@@ -1,9 +1,15 @@
 const { env } = require('process');
 const express = require('express');
 const maxmind = require('@maxmind/geoip2-node').Reader;
+const fs = require("fs");
 
 const PORT = env.MYIP_PORT || 3000;
+const SSL_KEY = "./letsencrypt/privkey.pem";
+const SSL_FULLCHAIN = "./letsencrypt/fullchain.pem";
+
 const app = express();
+const http = require('http');
+const https = require('https');
 
 app.use((req, res, next) => {
     const clientIP = req.ip || req.socket.remoteAddress;
@@ -38,6 +44,21 @@ app.get('/', (req, res) => {
     });
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+s_key_exists = fs.existsSync(SSL_KEY);
+s_fc_exists = fs.existsSync(SSL_FULLCHAIN);
+
+console.log("Exists? " + SSL_KEY + " => " + s_key_exists);
+console.log("Exists? " + SSL_FULLCHAIN + " => " + s_fc_exists);
+
+if (s_key_exists && s_fc_exists){
+    https.createServer({
+        key: fs.readFileSync(SSL_KEY),
+        cert: fs.readFileSync(SSL_FULLCHAIN)
+    }, app).listen(PORT, '0.0.0.0', () => {
+        console.log(`Server HTTPS is running on port ${PORT}`);
+    });    
+}else{
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`Server HTTP is running on port ${PORT}`);
+    });    
+}

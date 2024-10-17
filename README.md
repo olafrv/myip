@@ -6,6 +6,9 @@ MYIP_TOKEN=your_token
 MYIP_MM_USER=your_maxmind_user
 MYIP_MM_KEY=your_maxmind_key
 MYIP_PORT=8888
+# Let's Encrypt for HTTPS, adjust also docker-compose.yaml
+MYIP_SSL_KEY=<path-to-letsencrypt-privkey.pem>  #  optional
+MYIP_SSL_FULLCHAIN=<path-to-letsencrypt-fullchain.pem>  # optional
 ```
 
 Run the following commands:
@@ -24,6 +27,7 @@ make restart    # restart the app container (daemon)
 Use the following command to get the IP ASN:
 ```bash	
 wget -qO- http://localhost:8888/?token=your_token
+curl -sk http://localhost:8888/?token=your_token
 # output: {"ip":"your_ip","asn":"your_asn"}
 ```
 
