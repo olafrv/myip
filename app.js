@@ -13,7 +13,8 @@ const https = require('https');
 
 app.use((req, res, next) => {
     const clientIP = req.ip || req.socket.remoteAddress;
-    const token = req.query.token || '';
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
     if(token != env.MYIP_TOKEN){
         console.log(clientIP + ': Unauthorized!');
         res.status(403).json({
