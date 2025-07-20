@@ -8,7 +8,6 @@ const SSL_KEY = "./letsencrypt/privkey.pem";
 const SSL_FULLCHAIN = "./letsencrypt/fullchain.pem";
 
 const app = express();
-const http = require('http');
 const https = require('https');
 
 app.use((req, res, next) => {

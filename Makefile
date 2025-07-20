@@ -1,30 +1,20 @@
 include .env
 export
 
-all: install download start
+default: run
 
-install:
-	sudo apt-get install -y nodejs npm
-	npm install
+build:
+	docker compose build
 
-download:
-	mkdir -p dbs
-	nodejs download.js \
-	&& find dbs -type d -name 'GeoLite2-ASN_*' | xargs -n1 rm -v -i -rf \
-	&& tar xvfz dbs/GeoLite2-ASN.tar.gz -C dbs/ \
-	&& cp dbs/GeoLite2-ASN_*/*.mmdb dbs/ || echo "Maxmind DB download error!"
-	test -f dbs/GeoLite2-ASN.mmdb 
+run: build
+	docker compose up
 
-run:
-	npm update > /dev/null
-	nodejs app.js
+refresh:
+	MYIP_DB_REFRESH_ONLY=1 docker compose up --abort-on-container-exit
 
-run.docker:
-	docker compose up --build
-
-start:
-	docker compose up -d --build
-
+start: build
+	docker compose up -d
+	
 stop:
 	docker compose down
 
