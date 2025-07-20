@@ -6,13 +6,13 @@ default: run
 build:
 	docker compose build
 
-run: build
+run:
 	docker compose up
 
 refresh:
 	MYIP_DB_REFRESH_ONLY=1 docker compose up --abort-on-container-exit
 
-start: build
+start:
 	docker compose up -d
 	
 stop:

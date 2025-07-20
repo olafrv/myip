@@ -15,6 +15,8 @@ MYIP_SSL_FULLCHAIN=<path-to-letsencrypt-fullchain.pem>  # optional
 Run the following commands:
 ```bash
 sudo apt install make
+make build      # Build the Docker image
+make refresh    # Refresh the MaxMind database (if needed)
 make run        # Dev: run the node app (foreground)
 make start      # start the app container (daemon)
 make stop       # stop the app container (daemon)
