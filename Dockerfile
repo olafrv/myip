@@ -1,8 +1,8 @@
-FROM node:24-slim
+FROM node:22.17.1-slim
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY package.json ./
 RUN npm install
 
 COPY . .
