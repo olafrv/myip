@@ -1,5 +1,7 @@
+ARG NODE_VERSION=24.13.1
+
 # Build stage
-FROM node:24.13.1-slim AS builder
+FROM node:${NODE_VERSION}-slim AS builder
 
 # Set the working directory
 WORKDIR /usr/src/app
@@ -10,7 +12,7 @@ RUN npm install --only=production
 RUN npm cache clean --force
 
 # Production stage
-FROM node:22.17.1-slim AS production
+FROM node:${NODE_VERSION}-slim AS production
 
 # Set the working directory
 WORKDIR /usr/src/app
