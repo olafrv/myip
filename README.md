@@ -10,7 +10,7 @@ MYIP_PORT=8888
 MYIP_DB_ONCE=1  
 # Set to 1 to refresh database without starting the app (default: 0)
 MYIP_DB_REFRESH_ONLY=0
-# Let's Encrypt (MYIP_SSL_* are optional)
+# Let's Encrypt (MYIP_SSL_* optional, but insecure if not set)
 MYIP_SSL_KEY=<path-to-letsencrypt-privkey.pem>
 MYIP_SSL_FULLCHAIN=<path-to-letsencrypt-fullchain.pem>
 ```
