@@ -29,6 +29,7 @@ make restart    # restart the app container (daemon)
 Use the following command to get the IP ASN:
 ```bash	
 header="Authorization: Bearer your_token"
+# Note: --no-check-certificate is only needed for http; remove it when using HTTPS
 wget -qO- --no-check-certificate --header="${header}" http://localhost:8888
 curl -sk http://localhost:8888 -H "${header}"
 # Outputs: 
