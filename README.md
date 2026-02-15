@@ -6,7 +6,10 @@ MYIP_TOKEN=your_token
 MYIP_MM_USER=your_maxmind_user
 MYIP_MM_KEY=your_maxmind_key
 MYIP_PORT=8888
-MYIP_DB_ONCE=1  # Download database once (not on every restart)
+# Download database once (not on every restart)
+MYIP_DB_ONCE=1  
+# Set to 1 to refresh database without starting the app (default: 0)
+MYIP_DB_REFRESH_ONLY=0
 # Let's Encrypt for HTTPS, you must adjust also docker-compose.yaml
 MYIP_SSL_KEY=<path-to-letsencrypt-privkey.pem>  #  optional
 MYIP_SSL_FULLCHAIN=<path-to-letsencrypt-fullchain.pem>  # optional
