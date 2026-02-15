@@ -10,9 +10,9 @@ MYIP_PORT=8888
 MYIP_DB_ONCE=1  
 # Set to 1 to refresh database without starting the app (default: 0)
 MYIP_DB_REFRESH_ONLY=0
-# Let's Encrypt for HTTPS, you must adjust also docker-compose.yaml
-MYIP_SSL_KEY=<path-to-letsencrypt-privkey.pem>  #  optional
-MYIP_SSL_FULLCHAIN=<path-to-letsencrypt-fullchain.pem>  # optional
+# Let's Encrypt (MYIP_SSL_* are optional)
+MYIP_SSL_KEY=<path-to-letsencrypt-privkey.pem>
+MYIP_SSL_FULLCHAIN=<path-to-letsencrypt-fullchain.pem>
 ```
 
 Run the following commands:
