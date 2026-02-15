@@ -6,8 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      # MYIP_DB_REFRESH_ONLY must be an integer, 1 for true, 0 for false
-      - MYIP_DB_REFRESH_ONLY=${MYIP_DB_REFRESH_ONLY}
+      # MYIP_DB_REFRESH_ONLY must be 1 => true, 0 => false
+      - MYIP_DB_REFRESH_ONLY=${MYIP_DB_REFRESH_ONLY:-0}
       - NODE_ENV=production
     env_file:
       - .env
