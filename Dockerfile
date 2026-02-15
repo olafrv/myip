@@ -1,5 +1,5 @@
 # Build stage
-FROM node:22.17.1-slim AS builder
+FROM node:24.13.1-slim AS builder
 
 # Set the working directory
 WORKDIR /usr/src/app
