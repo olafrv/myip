@@ -5,6 +5,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        NODE_VERSION: ${NODE_VERSION}
+        PNPM_VERSION: ${PNPM_VERSION}
     environment:
       # MYIP_DB_REFRESH_ONLY must be 1 => true, 0 => false
       - MYIP_DB_REFRESH_ONLY=${MYIP_DB_REFRESH_ONLY:-0}
@@ -18,4 +21,3 @@ services:
       - ./dbs:/usr/src/app/dbs
       - "${MYIP_SSL_KEY}:/usr/src/app/letsencrypt/privkey.pem"
       - "${MYIP_SSL_FULLCHAIN}:/usr/src/app/letsencrypt/fullchain.pem"
-

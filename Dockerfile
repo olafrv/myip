@@ -1,36 +1,33 @@
-ARG NODE_VERSION=24.13.1
+ARG NODE_VERSION
+ARG PNPM_VERSION
 
 # Build stage
 FROM node:${NODE_VERSION}-slim AS builder
 
-# Set the working directory
+ARG PNPM_VERSION
+
 WORKDIR /usr/src/app
 
-# Install dependencies
-COPY package.json ./
-RUN npm install --only=production
-RUN npm cache clean --force
+# Copy metadata + lockfile first for layer caching
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .pnpmfile.cjs ./
+
+RUN corepack enable \
+    && corepack prepare pnpm@${PNPM_VERSION} --activate \
+    && pnpm install --prod --frozen-lockfile --ignore-scripts
 
 # Production stage
 FROM node:${NODE_VERSION}-slim AS production
 
-# Set the working directory
 WORKDIR /usr/src/app
 
-# Copy node_modules from builder stage
+# Copy installed node_modules from builder
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 
 # Copy application files
-COPY download.js ./
-COPY app.js ./
-COPY entrypoint.sh ./
+COPY download.js app.js entrypoint.sh ./
 
-# Make entrypoint executable
-RUN mkdir -p dbs && \
-    chmod +x entrypoint.sh
+RUN mkdir -p dbs && chmod +x entrypoint.sh
 
-# Web application port
 EXPOSE 3000
 
-# Download db and run the app
 CMD ["./entrypoint.sh"]
