@@ -14,7 +14,7 @@ MYIP_PORT=8888
 MYIP_DB_ONCE=1
 # Set to 1 to refresh database without starting the app (default: 0)
 MYIP_DB_REFRESH_ONLY=0
-# Let's Encrypt (MYIP_SSL_* optional, but insecure if not set)
+# TLS cert paths (optional; defaults to self-signed cert for localhost testing)
 MYIP_SSL_KEY=<path-to-letsencrypt-privkey.pem>
 MYIP_SSL_FULLCHAIN=<path-to-letsencrypt-fullchain.pem>
 ```
@@ -25,6 +25,14 @@ Install Node.js, nvm, pnpm, and project dependencies (versions pinned in [Makefi
 sudo apt install make
 make install  # Install nvm, Node.js, pnpm, and project dependencies
 ```
+
+For localhost testing, generate a self-signed TLS certificate (stored in `tmp/`, gitignored):
+
+```bash
+make cert
+```
+
+The certificate defaults are pre-wired in `docker-compose.yaml` (`MYIP_SSL_KEY`, `MYIP_SSL_FULLCHAIN`), so no `.env` changes are needed for local runs. Use `curl -sk` or `wget --no-check-certificate` to accept the self-signed cert (see [Usage](#usage)).
 
 ## Version Management
 
@@ -40,11 +48,12 @@ See [README_PNPM.md](README_PNPM.md) for pnpm usage, security configuration, and
 
 ```bash
 make build      # Build the Docker image
-make refresh    # Refresh the MaxMind database (if needed)
-make run        # Run in foreground
-make start      # Start as daemon
+make run        # Build and run in foreground
+make start      # Build and start as daemon
+make restart    # Build and restart as daemon
 make stop       # Stop
-make restart    # Restart
+make refresh    # Refresh the MaxMind database (if needed)
+make test       # Build, start, and test the API
 ```
 
 ## Usage

@@ -8,9 +8,18 @@ export PNPM_VERSION
 include .env
 export
 
-.PHONY: install sync build run refresh start stop restart
+.PHONY: cert install sync build run refresh start stop restart test
 
 default: run
+
+cert: ## Generate self-signed TLS certificate for localhost testing
+	mkdir -p tmp
+	openssl req -x509 -newkey rsa:2048 \
+		-keyout tmp/localhost-pk.pem \
+		-out tmp/localhost-fc.pem \
+		-days 365 -nodes \
+		-subj "/CN=localhost" \
+		-addext "subjectAltName=DNS:localhost,IP:127.0.0.1"
 
 install: ## Install nvm, Node.js, pnpm, and project dependencies
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$(NVM_VERSION)/install.sh | bash
@@ -32,16 +41,32 @@ sync: ## Sync versions into .nvmrc and package.json
 build:
 	docker compose build
 
-run:
+run: build
 	docker compose up
 
 refresh:
 	MYIP_DB_REFRESH_ONLY=1 docker compose up --abort-on-container-exit
 
-start:
+start: build
 	docker compose up -d
 
 stop:
 	docker compose down
 
 restart: stop start
+
+test: start ## Build, start, and test the API
+	@SSL_KEY="$${MYIP_SSL_KEY:-./tmp/localhost-pk.pem}"; \
+	if [ -f "$$SSL_KEY" ]; then PROTO=https; else PROTO=http; fi; \
+	URL="$$PROTO://localhost:$(MYIP_PORT)"; \
+	echo "Waiting for $$URL ..."; \
+	for i in $$(seq 1 30); do \
+		if curl -sk "$$URL" -o /dev/null 2>/dev/null; then break; fi; \
+		echo "  waiting... ($$i/30)"; \
+		sleep 2; \
+	done; \
+	echo "==> $$URL"; \
+	echo "--- Authorized (expect 200):"; \
+	curl -sk -w "\nHTTP %{http_code}\n" -H "Authorization: Bearer $(MYIP_TOKEN)" "$$URL"; \
+	echo "--- Unauthorized (expect 403):"; \
+	curl -sk -w "\nHTTP %{http_code}\n" "$$URL"
