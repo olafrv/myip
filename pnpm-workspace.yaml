@@ -1,4 +1,8 @@
 saveExact: true
+# Blocks packages published less than 7 days ago, quarantining freshly
+# compromised releases. README_PNPM.md already documented this setting;
+# it was never actually applied here.
+minimumReleaseAge: 10080
 overrides:
   # CVE-2026-82562, CVE-2026-82417: qs <= 6.15.3 is vulnerable.
   # Reached transitively via express and body-parser, both of which still
