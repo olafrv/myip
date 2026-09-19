@@ -22,6 +22,16 @@ jobs:
       - name: Enable corepack
         run: corepack enable
 
+      # Runs before install: needs no dependencies and should fail fast.
+      # See PNPM_SECURITY.md -> Enforced Security Measures -> 9. CI/CD Checks.
+      - name: Policy deny-rule guard
+        run: pnpm run check:deny-rules
+
+      # Fails if engines.node is stale relative to .nvmrc, i.e. someone edited
+      # .nvmrc without re-syncing.
+      - name: Node-pin sync
+        run: pnpm run sync:node-pin && git diff --exit-code package.json
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 

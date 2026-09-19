@@ -19,7 +19,7 @@ MYIP_SSL_KEY=<path-to-letsencrypt-privkey.pem>
 MYIP_SSL_FULLCHAIN=<path-to-letsencrypt-fullchain.pem>
 ```
 
-Install Node.js, nvm, pnpm, and project dependencies (versions pinned in [Makefile](Makefile)):
+Install Node.js, nvm, pnpm, and project dependencies (Node pinned in [.nvmrc](.nvmrc), pnpm in [Makefile](Makefile)):
 
 ```bash
 sudo apt install make
@@ -42,7 +42,7 @@ All pinned versions (Node.js, pnpm) live in one place — the top of [Makefile](
 make sync
 ```
 
-See [README_PNPM.md](README_PNPM.md) for pnpm usage, security configuration, and package management commands.
+See [PNPM_SECURITY.md](PNPM_SECURITY.md) for pnpm usage, security policy, and package management commands.
 
 ## Docker
 
