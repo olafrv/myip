@@ -1,1 +1,6 @@
 saveExact: true
+overrides:
+  # CVE-2026-82562, CVE-2026-82417: qs <= 6.15.3 is vulnerable.
+  # Reached transitively via express and body-parser, both of which still
+  # pin a 6.15.x range, so the floor has to be forced here.
+  qs: ">=6.16.0 <7.0.0"
