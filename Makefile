@@ -1,8 +1,13 @@
-# .nvmrc is the single source of truth for the Node version.
-# See PNPM_SECURITY.md -> "Node version - single source of truth".
-# To bump Node: edit .nvmrc, run `make sync`, commit both files.
+# Both versions below are DERIVED, so neither is written out twice.
+#   Node: .nvmrc is the single source of truth (PNPM_SECURITY.md -> "Node
+#     version - single source of truth"). Bump it, run `make sync`, commit both.
+#   pnpm: package.json's packageManager field is the source of truth
+#     (PNPM_SECURITY.md -> "Keep pnpm updated via the packageManager field +
+#     Corepack"). Bump it with `corepack use pnpm@<version>`, which also writes
+#     the integrity hash. Parsed with sed, not node, so `make install` still
+#     works before a Node runtime exists.
 NODE_VERSION := $(shell cat .nvmrc)
-PNPM_VERSION := 11.1.2
+PNPM_VERSION := $(shell sed -n 's/.*"packageManager": *"pnpm@\([0-9.]*\).*/\1/p' package.json)
 NVM_VERSION  := 0.40.4
 
 export NODE_VERSION
@@ -28,16 +33,8 @@ install: ## Install nvm, Node.js, pnpm, and project dependencies
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$(NVM_VERSION)/install.sh | bash
 	bash -c '. "$$HOME/.nvm/nvm.sh" && nvm install && nvm use && node -v && corepack enable pnpm && pnpm -v && pnpm install'
 
-sync: ## Sync pins into package.json (.nvmrc is the source of truth for Node)
+sync: ## Regenerate engines.node from .nvmrc
 	@pnpm run sync:node-pin
-	@node -e " \
-		const fs = require('fs'); \
-		const p = JSON.parse(fs.readFileSync('package.json', 'utf8')); \
-		p.engines = p.engines || {}; \
-		p.engines.pnpm = '$(PNPM_VERSION)'; \
-		p.packageManager = 'pnpm@$(PNPM_VERSION)'; \
-		fs.writeFileSync('package.json', JSON.stringify(p, null, 2) + '\n'); \
-	"
 	@echo "Synced: node=$(NODE_VERSION) pnpm=$(PNPM_VERSION)"
 
 build:
