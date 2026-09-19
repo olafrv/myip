@@ -1,22 +1,24 @@
 {
-    "name": "myip",
-    "version": "2.0.0",
-    "description": "A simple Node.js API to get client IP address and ASN",
-    "main": "app.js",
-    "packageManager": "pnpm@11.1.2",
-    "engines": {
-        "node": "24.15.0",
-        "pnpm": "11.1.2"
-    },
-    "scripts": {
-        "start": "node app.js",
-        "audit": "pnpm audit --audit-level=moderate"
-    },
-    "author": "Olaf Reitmaier",
-    "license": "MIT",
-    "dependencies": {
-        "@maxmind/geoip2-node": "5.0.0",
-        "express": "4.22.2",
-        "follow-redirects": "1.16.0"
-    }
+  "name": "myip",
+  "version": "2.0.0",
+  "description": "A simple Node.js API to get client IP address and ASN",
+  "main": "app.js",
+  "packageManager": "pnpm@11.1.2",
+  "engines": {
+    "node": "24.15.0",
+    "pnpm": "11.1.2"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "audit": "pnpm audit --audit-level=moderate",
+    "check:deny-rules": "node scripts/check-deny-rules.mjs",
+    "sync:node-pin": "node scripts/sync-node-pin.mjs"
+  },
+  "author": "Olaf Reitmaier",
+  "license": "MIT",
+  "dependencies": {
+    "@maxmind/geoip2-node": "5.0.0",
+    "express": "4.22.2",
+    "follow-redirects": "1.16.0"
+  }
 }
