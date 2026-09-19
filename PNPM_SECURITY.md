@@ -294,11 +294,23 @@ range. It lives in two files, but **`.nvmrc` is the single source of truth**:
 `engines.node` is generated, the two cannot drift as long as you sync after every
 `.nvmrc` change — and CI fails the build if you forget.
 
-### pnpm version
-The pnpm pin is **not** derived from `.nvmrc`. `PNPM_VERSION` in the `Makefile`
-is its source of truth, and `make sync` writes it to `engines.pnpm` and
-`packageManager`. The same variable feeds the Docker build arg, so the container
-and the host agree.
+### pnpm version — single source of truth
+The pnpm pin is **not** derived from `.nvmrc`. Its single source of truth is the
+`packageManager` field in `package.json`.
+
+**Rule — to bump pnpm:** run `corepack use pnpm@<version>`. That rewrites
+`packageManager` **with an integrity hash**, which Corepack verifies when it
+fetches the tarball. Never hand-edit the field, and never regenerate it from a
+version variable: writing a bare `pnpm@<version>` drops the hash and silently
+removes that verification.
+
+There is no `engines.pnpm`. It would be a weaker duplicate of `packageManager`
+— no hash, and free to drift — so the pin lives in exactly one place.
+
+The `Makefile` **reads** `packageManager` to feed the Docker build arg, so the
+container and the host agree without the version being written out twice. It
+parses the field with `sed` rather than `node`, so `make install` still resolves
+it before a Node runtime exists.
 
 ### `pnpm-lock.yaml` — lock file
 - **Always commit.** Ensures reproducible builds and prevents supply-chain drift.

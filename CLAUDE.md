@@ -27,9 +27,10 @@ change that violates it must not be committed.
 generated from it. To bump Node: edit `.nvmrc`, run `make sync`, commit both
 files together. Never hand-edit `engines.node`.
 
-The pnpm pin is separate: `PNPM_VERSION` in the `Makefile` is its source of
-truth, and `make sync` writes it to `engines.pnpm`, `packageManager` and the
-Docker build arg.
+The pnpm pin is separate: `packageManager` in `package.json` is its source of
+truth. Bump it with `corepack use pnpm@<version>`, which also writes the
+integrity hash — never hand-edit it, and never regenerate it from a variable,
+which drops the hash. The `Makefile` reads it for the Docker build arg.
 
 ## Tests
 
