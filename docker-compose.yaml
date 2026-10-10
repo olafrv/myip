@@ -2,6 +2,8 @@ services:
   myip:
     container_name: myip
     image: olafrv/myip:latest
+    # Node as PID 1 ignores SIGTERM (no default handler); tini forwards it.
+    init: true
     build:
       context: .
       dockerfile: Dockerfile
