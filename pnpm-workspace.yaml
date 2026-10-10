@@ -8,3 +8,7 @@ overrides:
   # Reached transitively via express and body-parser, both of which still
   # pin a 6.15.x range, so the floor has to be forced here.
   qs: ">=6.16.0 <7.0.0"
+  # CVE-2026-90711 (GHSA-jqcg-44mw-7w3h): proxy-addr < 2.0.8 trusts every
+  # client for IPv4-mapped IPv6 trust subnets. Reached via express, which
+  # pins ~2.0.7 and so still resolves the old lockfile entry.
+  proxy-addr: ">=2.0.8 <3.0.0"
