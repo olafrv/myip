@@ -5,9 +5,14 @@ strictPeerDependencies: true
 saveExact: true
 overrides:
   # CVE-2026-82562, CVE-2026-82417: qs <= 6.15.3 is vulnerable.
+  # GHSA-6pq8-jhm2-2vcw: qs <= 6.16.0 is vulnerable, fixed in 6.16.1.
   # Reached transitively via express and body-parser, both of which still
   # pin a 6.15.x range, so the floor has to be forced here.
-  qs: ">=6.16.0 <7.0.0"
+  qs: ">=6.16.1 <7.0.0"
+  # GHSA-27r3-jxmh-p828: body-parser < 1.20.9 is vulnerable to DoS via trailing
+  # bytes after a compressed request body. Reached via express, which pins
+  # ~1.20.5 and so still resolves the old lockfile entry.
+  body-parser: ">=1.20.9 <2.0.0"
   # CVE-2026-90711 (GHSA-jqcg-44mw-7w3h): proxy-addr < 2.0.8 trusts every
   # client for IPv4-mapped IPv6 trust subnets. Reached via express, which
   # pins ~2.0.7 and so still resolves the old lockfile entry.
