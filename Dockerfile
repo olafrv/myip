@@ -20,13 +20,17 @@ FROM node:${NODE_VERSION}-slim AS production
 
 WORKDIR /usr/src/app
 
-# Copy installed node_modules from builder
+# Copy installed node_modules from builder (root-owned, read-only to the app)
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 
-# Copy application files
+# Copy application files (root-owned, read-only to the app)
 COPY download.js app.js entrypoint.sh ./
 
-RUN mkdir -p dbs && chmod +x entrypoint.sh
+# Only dbs/ must be writable; the image's built-in "node" user is uid/gid 1000
+RUN mkdir -p dbs && chmod +x entrypoint.sh && chown node:node dbs
+
+# Run as non-root
+USER node
 
 EXPOSE 3000
 
