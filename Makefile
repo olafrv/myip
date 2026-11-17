@@ -43,8 +43,8 @@ build:
 run: build
 	docker compose up
 
-refresh:
-	MYIP_DB_REFRESH_ONLY=1 docker compose up --abort-on-container-exit
+refresh: ## One-off DB download; `run` ignores `restart: always`, so it isn't re-run after exiting
+	docker compose run --rm -e MYIP_DB_REFRESH_ONLY=1 myip
 
 start: build
 	docker compose up -d
